@@ -390,12 +390,12 @@ webpackContext.id = "./src sync recursive ^\\.\\/(schema|schema\\/index)\\.(gql|
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "users", function() { return users; });
 let users = [{
-  id: 1,
+  id: '1',
   name: "user1",
   email: "USER1@gmail.com",
   age: 22
 }, {
-  id: 2,
+  id: '2',
   name: "user2",
   email: "user2@gmail.com",
   age: 23
@@ -426,7 +426,55 @@ const resolvers = {
     }
   },
   User: {
-    email: user => user.email.toLowerCase() // Example of a custom field resolver
+    email: user => user.email.toLowerCase()
+  },
+  User: {
+    age: user => user.age = parseInt(user.age)
+  },
+  Mutation: {
+    createUser: (parent, {
+      id,
+      name,
+      email,
+      age
+    }, context, info) => {
+      const newUser = {
+        name,
+        email,
+        id,
+        age
+      };
+      _db__WEBPACK_IMPORTED_MODULE_0__["users"].push(newUser);
+      console.log(_db__WEBPACK_IMPORTED_MODULE_0__["users"]);
+      return newUser;
+    },
+    deleteUser: (parent, {
+      id
+    }, context, info) => {
+      console.log(id);
+      _db__WEBPACK_IMPORTED_MODULE_0__["users"].forEach(user => {
+        console.log(typeof id);
+      });
+      const index = _db__WEBPACK_IMPORTED_MODULE_0__["users"].findIndex(user => user.id === id);
+      if (index === -1) {
+        throw new Error(`User with id ${id} not found`);
+      }
+      const [deletedUser] = _db__WEBPACK_IMPORTED_MODULE_0__["users"].splice(index, 1);
+      console.log(deletedUser);
+      return deletedUser;
+    },
+    updateUser: (parent, {
+      id,
+      name,
+      email,
+      age
+    }, context, info) => {
+      let newUser = _db__WEBPACK_IMPORTED_MODULE_0__["users"].find(user => user.id === id);
+      newUser.name = name;
+      newUser.email = email;
+      newUser.age = age;
+      return newUser;
+    }
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = (resolvers);
@@ -441,8 +489,8 @@ const resolvers = {
 /***/ (function(module, exports) {
 
 
-    var doc = {"kind":"Document","definitions":[{"kind":"ObjectTypeDefinition","name":{"kind":"Name","value":"User"},"interfaces":[],"directives":[],"fields":[{"kind":"FieldDefinition","name":{"kind":"Name","value":"id"},"arguments":[],"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}},"directives":[]},{"kind":"FieldDefinition","name":{"kind":"Name","value":"email"},"arguments":[],"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},"directives":[]},{"kind":"FieldDefinition","name":{"kind":"Name","value":"age"},"arguments":[],"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},"directives":[]},{"kind":"FieldDefinition","name":{"kind":"Name","value":"name"},"arguments":[],"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},"directives":[]}]},{"kind":"ObjectTypeDefinition","name":{"kind":"Name","value":"Query"},"interfaces":[],"directives":[],"fields":[{"kind":"FieldDefinition","name":{"kind":"Name","value":"users"},"arguments":[],"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"User"}}}}},"directives":[]},{"kind":"FieldDefinition","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"InputValueDefinition","name":{"kind":"Name","value":"id"},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}},"directives":[]}],"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"User"}}},"directives":[]}]}],"loc":{"start":0,"end":137}};
-    doc.loc.source = {"body":"type User{\n    id: ID!\n    email: String!\n    age : String!\n    name : String!\n}\n\ntype Query {\n  users: [User!]!\n  user(id: ID!): User!\n}","name":"GraphQL request","locationOffset":{"line":1,"column":1}};
+    var doc = {"kind":"Document","definitions":[{"kind":"ObjectTypeDefinition","name":{"kind":"Name","value":"User"},"interfaces":[],"directives":[],"fields":[{"kind":"FieldDefinition","name":{"kind":"Name","value":"id"},"arguments":[],"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}},"directives":[]},{"kind":"FieldDefinition","name":{"kind":"Name","value":"email"},"arguments":[],"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},"directives":[]},{"kind":"FieldDefinition","name":{"kind":"Name","value":"age"},"arguments":[],"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},"directives":[]},{"kind":"FieldDefinition","name":{"kind":"Name","value":"name"},"arguments":[],"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},"directives":[]}]},{"kind":"ObjectTypeDefinition","name":{"kind":"Name","value":"Query"},"interfaces":[],"directives":[],"fields":[{"kind":"FieldDefinition","name":{"kind":"Name","value":"users"},"arguments":[],"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"User"}}}}},"directives":[]},{"kind":"FieldDefinition","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"InputValueDefinition","name":{"kind":"Name","value":"id"},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}},"directives":[]}],"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"User"}}},"directives":[]}]},{"kind":"ObjectTypeDefinition","name":{"kind":"Name","value":"Mutation"},"interfaces":[],"directives":[],"fields":[{"kind":"FieldDefinition","name":{"kind":"Name","value":"createUser"},"arguments":[{"kind":"InputValueDefinition","name":{"kind":"Name","value":"id"},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}},"directives":[]},{"kind":"InputValueDefinition","name":{"kind":"Name","value":"name"},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"directives":[]},{"kind":"InputValueDefinition","name":{"kind":"Name","value":"email"},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},"directives":[]},{"kind":"InputValueDefinition","name":{"kind":"Name","value":"age"},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},"directives":[]}],"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"User"}}},"directives":[]},{"kind":"FieldDefinition","name":{"kind":"Name","value":"deleteUser"},"arguments":[{"kind":"InputValueDefinition","name":{"kind":"Name","value":"id"},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}},"directives":[]}],"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"User"}}},"directives":[]},{"kind":"FieldDefinition","name":{"kind":"Name","value":"updateUser"},"arguments":[{"kind":"InputValueDefinition","name":{"kind":"Name","value":"id"},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}},"directives":[]},{"kind":"InputValueDefinition","name":{"kind":"Name","value":"name"},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"directives":[]},{"kind":"InputValueDefinition","name":{"kind":"Name","value":"email"},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"directives":[]},{"kind":"InputValueDefinition","name":{"kind":"Name","value":"age"},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}},"directives":[]}],"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"User"}}},"directives":[]},{"kind":"FieldDefinition","name":{"kind":"Name","value":"deleteUser"},"arguments":[{"kind":"InputValueDefinition","name":{"kind":"Name","value":"id"},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}},"directives":[]}],"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"User"}}},"directives":[]}]}],"loc":{"start":0,"end":351}};
+    doc.loc.source = {"body":"type User{\n    id: ID!\n    email: String!\n    age : Int!\n    name : String!\n}\n\ntype Query {\n  users: [User!]!\n  user(id: ID!): User!\n}\n\n\ntype Mutation {\n  createUser(id: ID!, name: String, email: String!, age:Int!) : User!\n  deleteUser(id:ID!) : User!\n   updateUser(id: ID!, name: String, email: String, age: Int): User!\n  deleteUser(id: ID!): User!\n}","name":"GraphQL request","locationOffset":{"line":1,"column":1}};
   
 
     var names = {};
